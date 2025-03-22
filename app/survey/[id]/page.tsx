@@ -1,4 +1,4 @@
-import { getSurveyById } from "@/data";
+import { fetchSurveyById } from "@/data";
 
 interface PageProp {
 	params: Promise<{ id: string }>;
@@ -7,7 +7,7 @@ interface PageProp {
 
 export default async function Page({ params }: PageProp) {
 	const { id } = await params
-	const survey = await getSurveyById(id)
+	const survey = await fetchSurveyById(id)
 
 	return (
 		<div>
