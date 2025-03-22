@@ -1,7 +1,7 @@
 "use server";
 
 import { FormState } from "@/helper/FormErrorHandler";
-import { createSurvey as createSurveyDB } from "@/data";
+import { addSurvey } from "@/data";
 import { GenerationConfig, GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
 // Initialize Google Generative AI
@@ -78,15 +78,9 @@ export async function createSurvey(formState: FormState, formData: FormData): Pr
 			throw new Error("Invalid response format from AI model");
 		}
 
-		// Create survey with generated questions - omitting id and createdAt as those will be set by the database
-		const surveyData = {
-			title: title.toString(),
-			questions: responseData.questions,
-			responses: []
-		};
 
 		// Call the database function to create the survey
-		const survey = await createSurveyDB(surveyData);
+		const survey = await addSurvey(title.toString(), responseData.questions);
 
 		return { 
 			...formState, 

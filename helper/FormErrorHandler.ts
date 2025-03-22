@@ -12,7 +12,7 @@ export const EMPTY_FORM_STATE: FormState = {
 	fieldErrors: {},
 	fieldValues: {
 		title: "",
-		numberOfQuestions: 10,
+		numberOfQuestions: 5,
 		difficulty: "easy"
 	}
 };

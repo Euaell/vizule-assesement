@@ -1,4 +1,7 @@
-import { getSurveyById } from "@/data";
+import { fetchSurveyById } from "@/data";
+import SurveyView from "@/components/SurveyView";
+import { Survey } from "@/types";
+import { notFound } from "next/navigation";
 
 interface PageProp {
 	params: Promise<{ id: string }>;
@@ -6,13 +9,18 @@ interface PageProp {
 }
 
 export default async function Page({ params }: PageProp) {
-	const { id } = await params
-	const survey = await getSurveyById(id)
+	const { id } = await params;
+	let survey: Survey;
+	try {
+		survey = await fetchSurveyById(id);
+	} catch (error) {
+		console.error('Error fetching survey:', error);
+		notFound();
+	}
 
 	return (
-		<div>
-			<span>id: {id}</span>
-			<span>survey: {JSON.stringify(survey)}</span>
+		<div className="max-w-4xl mx-auto p-6">
+			<SurveyView survey={survey} />
 		</div>
-	)
+	);
 }
