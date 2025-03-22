@@ -1,36 +1,148 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Survey Application
+
+A modern, responsive survey application built with Next.js, MongoDB, and Mongoose. This application allows users to create surveys with custom questions and collect responses from participants.
+
+## Features
+
+- **Create Surveys**: Create custom surveys with multiple questions
+- **Respond to Surveys**: Easy interface for users to submit responses
+- **View Responses**: See all responses for a specific survey
+- **MongoDB Integration**: Data persistence using MongoDB and Mongoose
+- **Modern UI**: Responsive design with a clean, modern interface
+- **Error Handling**: Comprehensive error pages and graceful error handling
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TailwindCSS 4
+- **Backend**: Next.js API routes, Server Components, and Server Actions
+- **Database**: MongoDB with Mongoose ODM
+- **Styling**: TailwindCSS for utility-first styling
+- **TypeScript**: Type-safe code throughout the application
+
+## Project Structure
+
+```
+├── actions/            # Server actions for form submissions
+├── app/                # Next.js app router components
+│   ├── api/            # API routes
+│   ├── create-survey/  # Create survey page
+│   ├── survey/         # Survey pages
+│   └── ...
+├── components/         # Reusable React components
+├── data/               # Data access layer with server actions
+├── helper/             # Helper utilities
+├── lib/                # Library code (Mongoose connection)
+├── models/             # Mongoose models for MongoDB
+├── public/             # Static assets
+└── types/              # TypeScript type definitions
+```
+
+## Data Models
+
+The application uses two main Mongoose models:
+
+### Survey Model
+```typescript
+{
+  title: string;              // Survey title
+  questions: string[];        // Array of question texts
+  responses: ObjectId[];      // References to Response documents
+  createdAt: Date;            // Timestamp when created
+  updatedAt: Date;            // Timestamp when updated
+}
+```
+
+### Response Model
+```typescript
+{
+  answers: string[];          // Array of answers
+  surveyId: ObjectId;         // Reference to parent Survey
+  createdAt: Date;            // Timestamp when created
+  updatedAt: Date;            // Timestamp when updated
+}
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+- MongoDB (local or Atlas)
+
+### Installation
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/survey-application.git
+   cd survey-application
+   ```
+
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables
+   Create a `.env` file in the root directory with the following variables:
+   ```
+   MONGODB_URI=mongodb://localhost:27017/vizule-survey-app
+   ```
+
+4. Run the development server
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Building for Production
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application includes the following API endpoints:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `GET /api/surveys` - Get all surveys
+- `POST /api/surveys` - Create a new survey
+- `GET /api/surveys/:id` - Get a specific survey
+- `GET /api/surveys/:id/responses` - Get all responses for a survey
+- `POST /api/surveys/:id/responses` - Submit a response to a survey
 
-## Learn More
+## Server Actions
 
-To learn more about Next.js, take a look at the following resources:
+The application uses React Server Actions for form handling:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `addSurvey(title, questions)` - Create a new survey
+- `addResponse(surveyId, answers)` - Add a response to a survey
+- `fetchSurveyById(id)` - Fetch a survey by ID
+- `fetchAllSurveys()` - Fetch all surveys
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Error Handling
 
-## Deploy on Vercel
+The application includes three types of error pages:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Not Found (404)**: When a page or resource cannot be found
+2. **Global Error**: For application-wide errors
+3. **Survey Error**: Specific to survey loading issues
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Next.js team for the amazing framework
+- MongoDB and Mongoose teams for the database and ODM
+- TailwindCSS team for the styling utilities
